@@ -70,7 +70,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: white;
+            background: white; /* Começa transparente */
             z-index: 1000;
             padding: 0.5rem 2rem;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -101,7 +101,7 @@
             gap: 2rem;
         }
         .nav-menu a {
-            color: var(--color-text);
+            color: var(--color-text); /* Cor inicial do texto do menu */
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
@@ -109,6 +109,7 @@
         }
         .site-header.scrolled .nav-menu a {
             color: var(--color-text);
+            text-shadow: none;
         }
         .nav-menu a:hover {
             color: var(--amarelo-rsr);
@@ -130,13 +131,14 @@
             display: none;
             background: none;
             border: none;
-            color: var(--color-text);
+            color: var(--color-text); /* Cor inicial do ícone mobile */
             font-size: 1.8rem;
             cursor: pointer;
             z-index: 1002;
         }
         .site-header.scrolled .mobile-menu-toggle {
             color: var(--color-text);
+            text-shadow: none;
         }
         .mobile-menu-overlay {
             position: fixed;
@@ -275,15 +277,58 @@
             height: 4px;
             background-color: var(--amarelo-rsr);
         }
+
+        /* === HERO SLIDER START === */
         .hero-section {
             height: 100vh;
             display: grid;
             place-content: center;
             text-align: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/instalacao_residencial.png') no-repeat center center/cover;
             padding-top: 90px;
+            position: relative;
+            overflow: hidden;
+            color: #FFFFFF;
         }
-        .hero-content { max-width: 800px; padding: 0 1rem; }
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            transform: scale(1.1); /* Efeito Ken Burns inicial */
+        }
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1); /* Efeito Ken Burns final */
+            transition: opacity 1.5s ease-in-out, transform 8s linear; /* Duração do zoom */
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+            z-index: 2;
+        }
+        .hero-content { 
+            max-width: 800px; 
+            padding: 0 1rem;
+            position: relative;
+            z-index: 3;
+        }
         .hero-section h1 {
             font-size: clamp(2.8rem, 6vw, 4.5rem);
             margin-bottom: 1rem;
@@ -297,6 +342,8 @@
             max-width: 600px;
             margin: 0 auto 2rem;
         }
+        /* === HERO SLIDER END === */
+
         .btn-primary {
             background: var(--amarelo-rsr);
             color: var(--cinza-escuro);
@@ -325,30 +372,71 @@
             transform: translateY(20px);
             transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
         }
-
+        
+        /* === ABOUT SECTION (RESTAURADA) === */
         .about-section { background-color: var(--color-section-white); }
         .about-container {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr; /* Duas colunas para desktop */
             gap: 4rem;
             align-items: center;
         }
         .about-text .section-title-wrapper {
-            text-align: left; 
+            text-align: left; /* Título alinhado à esquerda no desktop */
             margin-bottom: 2rem;
         }
         .about-text .section-title-wrapper .section-title::after {
             left: 0;
             transform: translateX(0);
         }
-        .about-text h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        .about-text p { 
+            color: #555;
+            margin-top: 1.5rem;
+            text-align: justify;
+            font-size: 1.1rem;
         }
-        .about-text p { color: var(--color-subtle); margin-top: 1.5rem; }
-        .about-image { width: 100%; height: auto; object-fit: cover; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
+        .about-image {
+            width: 100%; /* Ocupa a coluna do grid */
+            height: auto;
+        }
+        .about-image img {
+            width: 100%; /* Imagem se ajusta ao container */
+            max-height: 500px; /* Limite de altura para a imagem */
+            object-fit: cover;
+            border-radius: 8px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* === VIDEO MASK SECTION (ALTERADA) === */
+        .video-mask-section {
+            padding: 6rem 0; /* Apenas padding vertical, sem padding horizontal */
+            background-color: #f0f0f0;
+            overflow: hidden; /* Garante que nada vaze */
+        }
+        .video-mask-container {
+            position: relative;
+            width: 100%; /* Largura total */
+            /* max-width removido para ser maior */
+            margin: auto;
+            aspect-ratio: 1213 / 667;
+            mask-image: url("data:image/svg+xml,%3Csvg width='221' height='122' viewBox='0 0 221 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fillRule='evenodd' clipRule='evenodd' d='M183 4C183 1.79086 184.791 0 187 0H217C219.209 0 221 1.79086 221 4V14V28V99C221 101.209 219.209 103 217 103H182C179.791 103 178 104.791 178 107V118C178 120.209 176.209 122 174 122H28C25.7909 122 24 120.209 24 118V103V94V46C24 43.7909 22.2091 42 20 42H4C1.79086 42 0 40.2091 0 38V18C0 15.7909 1.79086 14 4 14H24H43H179C181.209 14 183 12.2091 183 10V4Z' fill='%23D9D9D9'/%3E%3C/svg%3E%0A");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='221' height='122' viewBox='0 0 221 122' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fillRule='evenodd' clipRule='evenodd' d='M183 4C183 1.79086 184.791 0 187 0H217C219.209 0 221 1.79086 221 4V14V28V99C221 101.209 219.209 103 217 103H182C179.791 103 178 104.791 178 107V118C178 120.209 176.209 122 174 122H28C25.7909 122 24 120.209 24 118V103V94V46C24 43.7909 22.2091 42 20 42H4C1.79086 42 0 40.2091 0 38V18C0 15.7909 1.79086 14 4 14H24H43H179C181.209 14 183 12.2091 183 10V4Z' fill='%23D9D9D9'/%3E%3C/svg%3E%0A");
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-position: center;
+            -webkit-mask-position: center;
+        }
+        .video-mask-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
         .layered-scroll-container { position: relative; }
         .layered-scroll-section {
             height: 100vh;
@@ -392,6 +480,7 @@
         /* === CONTACT SECTION START === */
         .contact-section { 
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/instalacao_residencial.png') no-repeat center center/cover;
+            background-attachment: fixed; /* Efeito parallax */
         }
         .contact-section .section-title {
             color: #FFFFFF;
@@ -436,7 +525,7 @@
             margin: 0 auto;
         }
         .faq-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid #ddd;
             padding: 1.5rem 0;
         }
         .faq-question {
@@ -500,16 +589,19 @@
             .mobile-menu-toggle { display: block; }
             section { padding: 4rem 1.5rem; }
             
+            /* === ABOUT SECTION MOBILE (ALTERADO) === */
             .about-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Coluna única no mobile */
             }
-            .about-image { 
-                order: -1; 
-                margin: 0 auto 2rem auto;
+            .about-image {
+                /* A ordem não é mais necessária, pois o HTML já está correto */
+                margin: 2.5rem auto 0 auto; /* Margem para separar do texto e centralizar */
                 width: 80%;
-                max-width: 100px;
+                max-width: 400px; /* Tamanho máximo da imagem no mobile */
             }
-            .about-text .section-title-wrapper { text-align: center; }
+            .about-text .section-title-wrapper { 
+                text-align: center; /* Centraliza o título no mobile */
+            }
             .about-text .section-title-wrapper .section-title::after {
                 left: 50%;
                 transform: translateX(-50%);
@@ -572,6 +664,8 @@
 
     <main>
         <section class="hero-section" id="hero">
+            <div class="hero-slider"></div>
+            <div class="hero-overlay"></div>
             <div class="hero-content">
                 <h1 class="animated-text-container-word">RSR Elétrica</h1>
                 <p class="subtitle animated-text-container">Iluminando seus sonhos com segurança e excelência.</p>
@@ -588,10 +682,11 @@
                     <div class="section-title-wrapper">
                         <h2 class="section-title animated-text-container-word">Sobre Nós</h2>
                     </div>
-                    <p>Com anos de experiência e dedicação, a RSR Elétrica se consolidou como referência em soluções elétricas seguras e eficientes. Nossa equipe é formada por profissionais qualificados, comprometidos em oferecer um serviço de excelência, desde o planejamento detalhado até a execução impecável de cada projeto. Atendemos clientes residenciais, comerciais e industriais, sempre com o objetivo de superar expectativas e garantir a total satisfação e segurança.</p>
+                    <p>Meu nome é Rogério dos Santos Rodrigues, nascido em Guararema-SP e atualmente residente em Mogi das Cruzes. Com formação em Técnico em Mecatrônica pela UMCTEC desde 2010 e Eletricista pelo SENAI, possuo registro ativo no CFT (Conselho Federal dos Técnicos), o que garante a conformidade e a qualidade de todos os serviços prestados.</p>
+                    <p>A empresa RSR Elétrica foi fundada em 4 de janeiro de 2017, com o objetivo de oferecer soluções completas em instalação e manutenção elétrica para os segmentos industrial, comercial e residencial. Também registrada no CFT, a RSR Elétrica nasceu do compromisso com a segurança, a eficiência e a excelência, buscando sempre superar as expectativas de cada cliente com profissionalismo e dedicação.</p>
                 </div>
                 <div class="about-image">
-                    <img src="img/" alt="Imagem futura do sobre" />
+                    <img src="img/logo_RSR.jpg" alt="Logo RSR Elétrica" />
                 </div>
             </div>
         </section>
@@ -625,12 +720,33 @@
                 <h2 class="section-title animated-text-container-word">Nossos Projetos</h2>
             </div>
             <div class="gallery-columns">
-                <div class="gallery-item"><img src="img/logo_RSR.jpg" alt="Projeto 1" /></div>
-                <div class="gallery-item"><img src="img/logo_RSR.jpg" alt="Projeto 2" /></div>
-                <div class="gallery-item"><img src="img/logo_RSR.jpg" alt="Projeto 3" /></div>
-                <div class="gallery-item"><img src="img/eletrcia_comercial.png" alt="Projeto 4" /></div>
-                <div class="gallery-item"><img src="img/instalacao_residencial.png" alt="Projeto 5" /></div>
-                <div class="gallery-item"><img src="img/manutencao_industrial.png" alt="Projeto 6" /></div>
+                <div class="gallery-item"><img src="img/0c9b7f9a-359e-4a9e-805b-e64722062f48.png" alt="Projeto de Instalação Residencial" /></div>
+                <div class="gallery-item"><img src="img/1e4c6111-0256-4725-8959-5e0cf90715f9.png" alt="Projeto de Elétrica Comercial" /></div>
+                <div class="gallery-item"><img src="img/3bafe4c5-dd9f-43b0-a54f-e9e8c9bab117.png" alt="Projeto de Manutenção Industrial" /></div>
+                <div class="gallery-item"><img src="img/3fe845fb-cdb5-45f7-a1ef-115bf0d4b01f.png" alt="Detalhe de Projeto Residencial" /></div>
+                <div class="gallery-item"><img src="img/9ab70c4d-5322-4f93-b4d4-94ac18a2d4a3.png" alt="Infraestrutura Comercial" /></div>
+                <div class="gallery-item"><img src="img/13d318f4-6479-4632-9918-399e835bf8fc.png" alt="Painel Industrial em Manutenção" /></div>
+                <div class="gallery-item"><img src="img/50c12e82-e50f-4256-bd81-d5a0af6e5253.png" alt="Projeto de Instalação Residencial" /></div>
+                <div class="gallery-item"><img src="img/b2124e26-4ea0-41bc-bc8c-9e221e987bab.png" alt="Projeto de Elétrica Comercial" /></div>
+                <div class="gallery-item"><img src="img/b2ff732a-8c9f-4a1a-9878-5904802bdf5a.png" alt="Projeto de Manutenção Industrial" /></div>
+                <div class="gallery-item"><img src="img/bf1255b4-ccae-4ef1-9ce0-e6516fc27aea.png" alt="Detalhe de Projeto Residencial" /></div>
+                <div class="gallery-item"><img src="img/bf175ebc-5aef-42a2-bafc-4f71bfed3939.png" alt="Infraestrutura Comercial" /></div>
+                <div class="gallery-item"><img src="img/c4da20a5-913e-45e0-bd39-5e02261096c0.png" alt="Painel Industrial em Manutenção" /></div>
+                <div class="gallery-item"><img src="img/d8ae28a7-278e-4fe6-a022-6887ba730d06.png" alt="Projeto de Instalação Residencial" /></div>
+                <div class="gallery-item"><img src="img/e3269da1-635d-4750-b00d-e8771faad015.png" alt="Projeto de Elétrica Comercial" /></div>
+                <div class="gallery-item"><img src="img/e3e47488-8604-416a-93f9-bccb0cd9ba24.png" alt="Projeto de Manutenção Industrial" /></div>
+                <div class="gallery-item"><img src="img/e540e0d8-cc56-437c-bcf1-119c9722af1c.png" alt="Detalhe de Projeto Residencial" /></div>
+                <div class="gallery-item"><img src="img/ea1a0b2f-496f-489f-bfd0-306ffe73f997.png" alt="Infraestrutura Comercial" /></div>
+                <div class="gallery-item"><img src="img/ee4a44c5-4c79-4408-89c3-b9524c84b6ed.png" alt="Painel Industrial em Manutenção" /></div>
+            </div>
+        </section>
+
+        <section class="video-mask-section">
+            <div class="video-mask-container">
+                <video autoplay muted loop playsinline>
+                    <source src="img/WhatsApp Video 2025-09-16 at 22.43.52.mp4" type="video/mp4" />
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
             </div>
         </section>
 
@@ -736,6 +852,36 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
+            
+            // --- Hero Section Background Slider ---
+            const heroSlider = document.querySelector('.hero-slider');
+            if (heroSlider) {
+                // !!! IMPORTANTE: Adicione ou remova as imagens do seu slider aqui
+                const images = [
+                    'img/instalacao_residencial.png',
+                    'img/eletrcia_comercial.png',
+                    'img/manutencao_industrial.png'
+                ];
+                let currentImageIndex = 0;
+
+                // Pre-carrega e adiciona os slides ao HTML
+                images.forEach((imgSrc, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'hero-slide';
+                    slide.style.backgroundImage = `url(${imgSrc})`;
+                    if (index === 0) slide.classList.add('active');
+                    heroSlider.appendChild(slide);
+                });
+
+                const slides = document.querySelectorAll('.hero-slide');
+
+                setInterval(() => {
+                    slides[currentImageIndex].classList.remove('active');
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    slides[currentImageIndex].classList.add('active');
+                }, 6000); // Muda a imagem a cada 6 segundos
+            }
+
 
             // --- Text Animation Setup ---
             const setupTextAnimation = (container) => {
